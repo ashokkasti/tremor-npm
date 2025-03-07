@@ -23,6 +23,13 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
+      - name: Setup PSE
+        id: pse-setup
+        uses: kkisalaya/ir-gh-action@v0.14
+        with:
+          api_url: 'https://app.invisirisk.com'
+          app_token: ${{ secrets.INVISIRISK_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: install react
         run: npm i react
       - name: install dependencies
@@ -33,3 +40,8 @@ jobs:
         run: npm run tests
       - name: build
         run: npm run build
+      - name: Cleanup PSE
+        if: always()
+        uses: kkisalaya/ir-gh-action@v0.14
+        with:
+          cleanup: 'true'
